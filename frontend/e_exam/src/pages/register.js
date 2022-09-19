@@ -128,7 +128,6 @@ class Register extends Component {
                 <Col>
                 <input
                   type="number"
-                  
                   id="sapid"
                   className="formFieldInput"
                   placeholder="Enter your Institute ID"
