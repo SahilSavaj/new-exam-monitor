@@ -1,6 +1,11 @@
 # dependencies
 /node_modules
 /node_modules/
+/node_modules/*
+**/node_modules
+/frontend/e_exam/node_modules/
+/frontend/e_exam/node_modules
+
 /.pnp
 .pnp.js
 
