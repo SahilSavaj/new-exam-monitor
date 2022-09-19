@@ -1,5 +1,5 @@
 # dependencies
-node_modules
+./frontend/e_exam/node_modules
 /.pnp
 .pnp.js
 
