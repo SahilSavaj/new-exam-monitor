@@ -1,12 +1,22 @@
 from flask import Flask,request
-import json
 from flask_cors import CORS
 
 from helpers import encrypter,decrypter
 from Login_main import Login
 
+
 app=Flask(__name__)
 CORS(app)
+
+@app.route('/',methods=['GET','POST'])
+def home():
+    response='200'
+    body='Home Page'
+    resp={"response":response,"body":body}
+    print(resp)
+    # db.close()
+    return (resp)
+
 
 @app.route('/login',methods=['GET','POST'])
 def log():

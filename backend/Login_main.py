@@ -1,6 +1,10 @@
-import imp
 from database import db
+import os
 from helpers import encrypter,decrypter
+from dotenv import load_dotenv
+
+load_dotenv()
+ENCRYPT_DECRYPT_KEY=os.getenv('ENCRYPTION_PASS')
 
 class Login:
     def __init__(self):

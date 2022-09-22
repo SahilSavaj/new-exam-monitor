@@ -9,4 +9,5 @@ then
 	docker rm $aws_service_api_container_id
 	docker build -t $IMAGE_NAME .
 fi
-docker run -d --name $aws_service_container_name $IMAGE_NAME:latest
+# docker run -d --name $aws_service_container_name $IMAGE_NAME:latest
+docker run --name $aws_service_container_name $IMAGE_NAME:latest
