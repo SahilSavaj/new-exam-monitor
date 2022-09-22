@@ -1,7 +1,8 @@
+from crypt import methods
 from flask import Flask,request
 import json
 from flask_cors import CORS
-
+import logging
 from helpers import encrypter,decrypter
 from Login_main import Login
 
@@ -13,7 +14,6 @@ def log():
     if request.method=='POST':
         try:
             login=Login()
-            
             args = request.args
             args=dict(args)
             response,body=login.LogUser(params=args)
@@ -28,6 +28,24 @@ def log():
     print(resp)
     # db.close()
     return (resp)
+
+@app.route('/capture',methods=['GET','POST'])
+def capture():
+    if request.method=='POST':
+        response='200'
+        print(request)
+        args = request.args
+        print(request.args)
+        args=dict(args)
+        # logging.debug(args)
+        body=args
+    else:
+        response='400'
+        body='Invalid Request'
+    resp={"response":response,"body":body}
+    # db.close()
+    return (resp)
+
 
 # @app.route('/register',methods=['GET','POST'])
 # def register():
