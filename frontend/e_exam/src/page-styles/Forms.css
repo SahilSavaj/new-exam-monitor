@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height:900px;
+    /* margin: auto; */
     
     /* margin: auto; */
     font-size: 0.5cm;
@@ -17,25 +17,28 @@
 
 .col{
     margin: 5px;
- 
+    width: 700px;
 }
 .form-labels{
-  width: 120px;
+  width: 150px;
 }
-
+.web-cam{
+  /* border-radius: 50px; */
+  margin-top: 190px;
+}
 .row{
-    display: flex;
-    /* align-items: center; */
-    justify-content: center;
-    /* padding: 10px; */
-    margin: 30px;
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  /* padding: 10px; */
+  margin: 20px;
 }
 .formCenter {
   border-radius: 20px;
     background-color: rgba(255,255,255,0.1);
     font-family: 'Montserrat';
     /* margin: auto; */
-    width: inherit;
+    width: 1350px;
     /* margin-bottom: 100px; */
   }
   
@@ -43,7 +46,7 @@
     width: 700px;
     display: flex;
     justify-content: center;
-    margin: 50px;
+    margin: 40px;
   }
   
   .formFieldLabel {

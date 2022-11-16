@@ -9,6 +9,13 @@
 /.pnp
 .pnp.js
 
+/backend/venv/
+/backend/venv
+venv
+/venv/
+/venv/*
+**/venv
+
 # testing
 /coverage
 

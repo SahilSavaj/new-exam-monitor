@@ -1,9 +1,7 @@
-from crypt import methods
 from flask import Flask,request
 from flask_cors import CORS
-import logging
-from helpers import encrypter,decrypter
 from Login_main import Login
+from Register_main import Register
 
 
 app=Flask(__name__)
@@ -18,22 +16,43 @@ def home():
     # db.close()
     return (resp)
 
+@app.route('/register',methods=['GET','POST'])
+def reg():
+    if request.method=='POST':
+        try:
+            register=Register()
+            body = request.json
+            # print(type(body))
+            # body=dict(body)
+            # print(body)
+            response,body=register.register_user(params=body)
+
+        except Exception as e:
+            response='400'
+            body=e
+    else:
+        response='200'
+        body='Registeration Page'
+    resp={"response":response,"body":body}
+    # print(resp)
+    # db.close()
+    return (resp)
 
 @app.route('/login',methods=['GET','POST'])
 def log():
     if request.method=='POST':
         try:
             login=Login()
-            args = request.args
-            args=dict(args)
-            response,body=login.LogUser(params=args)
+            body = request.json
+            # body=dict(body)
+            response,body=login.login_user(params=body)
 
         except Exception as e:
             response='400'
             body=e
     else:
-        response='400'
-        body='Invalid Request'
+        response='200'
+        body='Login Page'
     resp={"response":response,"body":body}
     print(resp)
     # db.close()
@@ -44,11 +63,11 @@ def capture():
     if request.method=='POST':
         response='200'
         print(request)
-        args = request.args
-        print(request.args)
-        args=dict(args)
-        # logging.debug(args)
-        body=args
+        body = request.body
+        print(request.body)
+        body=dict(body)
+        # logging.debug(body)
+        body=body
     else:
         response='400'
         body='Invalid Request'
@@ -56,27 +75,6 @@ def capture():
     # db.close()
     return (resp)
 
-
-# @app.route('/register',methods=['GET','POST'])
-# def register():
-#     if request.method=='POST':
-#         try:
-#             login=Login()
-            
-#             args = request.args
-#             args=dict(args)
-#             response,body=login.LogUser(params=args)
-
-#         except Exception as e:
-#             response='400'
-#             body=e
-#     else:
-#         response='400'
-#         body='Invalid Request'
-#     resp={"response":response,"body":body}
-#     print(resp)
-#     # db.close()
-#     return (resp)
 
 if __name__=='__main__':
     app.run(debug=True,host='0.0.0.0') 

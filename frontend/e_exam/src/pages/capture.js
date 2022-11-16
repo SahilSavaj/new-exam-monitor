@@ -2,7 +2,6 @@ import React,{useState,useEffect} from 'react';
 import Webcam from "react-webcam";
 import '../page-styles/Forms.css'
 import Container from 'react-bootstrap/Container';
-import b64toFile from 'b64-to-file';
 
 
 const Capture = () => {
@@ -17,23 +16,15 @@ const Capture = () => {
     const capture = React.useCallback(
         () => {
         const imageSrc = webcamRef.current.getScreenshot();
-        // setImage(imageSrc); 
-        const convertedFile =b64toFile(imageSrc,'image-test');
-        const url='http://172.17.0.2:5000/capture?';
-        
-        const params='image='.concat(imageSrc);
-        // fetch(url.concat(params),{
-        //   method:'POST',
-        // })
-        // .then(response => response.json())
-        // .then(response => console.log(response))
-        // .catch(error => console.log(error))
-        },
-        
-        [webcamRef]
-        
-    );
-  
+        setImage(imageSrc);   
+        }   
+        ,[webcamRef]
+      
+        ); 
+    const chal=(e)=>{
+      e.preventDefault();
+      capture();
+    } 
     return (
       <>
       <Container fluid>
@@ -52,7 +43,9 @@ const Capture = () => {
         />
         </div>
         <div className="formField">
-            <button className="formFieldButton" onClick={(e)=>{e.preventDefault();capture();}}>Capture</button>
+            <button className="formFieldButton" onClick={chal}>Capture</button>
+            {/* <button className="formFieldButton" onClick={()=> {capture();}}>Capture</button> */}
+
         </div>
         </form>
 

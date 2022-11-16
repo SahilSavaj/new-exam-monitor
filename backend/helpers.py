@@ -1,8 +1,8 @@
 from cryptography.fernet import Fernet
 
-def encrypter(password):
-    fkey=open("file_key.txt",'rb')
-    key=fkey.read()
+def encrypter(password,key):
+    # fkey=open("file_key.txt",'rb')
+    # key=fkey.read()
     # key=Fernet.generate_key()
     print(key)
     cipher=Fernet(key)
@@ -11,9 +11,9 @@ def encrypter(password):
     print("Function answer by decrypter - ",encrypted_pass)
     return encrypted_pass
 
-def decrypter(password):
-    fkey=open("file_key.txt",'rb')
-    key=fkey.read()
+def decrypter(password,key):
+    # fkey=open("file_key.txt",'rb')
+    # key=fkey.read()
     cipher=Fernet(key)
     print("Value in decryptor function - ",password)
     decrypted_pass=cipher.decrypt(password)
