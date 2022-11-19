@@ -33,7 +33,7 @@ def reg():
     else:
         response='200'
         body='Registeration Page'
-    resp={"response":response,"body":body}
+    resp={"statuscode":response,"response":body}
     # print(resp)
     # db.close()
     return (resp)
@@ -53,10 +53,16 @@ def log():
     else:
         response='200'
         body='Login Page'
-    resp={"response":response,"body":body}
+    resp={"statuscode":response,"response":body}
     print(resp)
     # db.close()
     return (resp)
+
+@app.route('/admin',methods=['GET','POST'])
+def admin():
+    if request.method=='GET':
+        
+
 
 @app.route('/capture',methods=['GET','POST'])
 def capture():
@@ -67,11 +73,11 @@ def capture():
         print(request.body)
         body=dict(body)
         # logging.debug(body)
-        body=body
+        # body=body
     else:
         response='400'
         body='Invalid Request'
-    resp={"response":response,"body":body}
+    resp={"statuscode":response,"response":body}
     # db.close()
     return (resp)
 

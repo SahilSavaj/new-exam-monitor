@@ -20,7 +20,7 @@ const Register =() => {
 
     const handleInputChange = (e) => {
       const {id , value} = e.target;
-      console.log()
+      // console.log()
       if(id === "name"){
         setName(value);
       }
@@ -36,13 +36,13 @@ const Register =() => {
       if(id === "sapid"){
         setSapid(value);
       }
-      if(id === "admin"){
-        setUser(value)
-      }
-      if(id === "student"){
-        setUser(value)
+      // if(id === "admin"){
+      //   setUser(value)
+      // }
+      // if(id === "student"){
+      //   setUser(value)
         
-      }
+      // }
       let content={
         name:name,
         username:username,
@@ -50,9 +50,9 @@ const Register =() => {
         email:email,
         sapid:sapid,
         image:image,
-        is_admin:user_type 
+        is_admin:true
       }
-      console.log(content)
+      // console.log(content)
 
     }
     
@@ -63,8 +63,9 @@ const Register =() => {
     };
     const webcamRef = React.useRef(null);
     const capture = async () => {
-      return await webcamRef.current.getScreenshot();
-        
+      // return await webcamRef.current.getScreenshot();
+        const img=await webcamRef.current.getScreenshot()
+        return img
         }   
         
   const Response_from_back=()=>{
@@ -74,8 +75,11 @@ const Register =() => {
   }
   const handleSubmit  = async (e) => {
     e.preventDefault();
-    // const image = capture();
-    const image="heeee"
+    const img = capture()
+    // image.then(function(result){console.log(result)}))
+    setImage(img.then(function(result){setImage(result)})) 
+    // const image="heeee"
+    // console.log(image)
     let content={
         name:name,
         username:username,
@@ -83,14 +87,14 @@ const Register =() => {
         email:email,
         sapid:sapid,
         image:image,
-        is_admin:user_type 
+        is_admin:true 
       }
     console.log(content);
     // const url='http://172.17.0.2:5000/register';
     const url='http://127.0.0.1:5000/register'
         await axios.post(url, content)
         .then(response => 
-          console.log(response)
+          console.log(response.data)
           )
         .catch(error => {
         console.error('There was an error!', error);

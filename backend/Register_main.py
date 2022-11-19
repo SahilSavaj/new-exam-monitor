@@ -19,7 +19,7 @@ class Register:
         q='''SELECT sapid FROM users WHERE sapid= %s '''
         self.pointer.execute(q,(sapid,))
         sap_id=self.pointer.fetchall()
-
+        print(sap_id,user_name)
         if sap_id!=[] and sapid==sap_id[0][0]:
             return [False,'sapid']
         elif user_name!=[] and username==user_name[0][0]:
@@ -27,10 +27,11 @@ class Register:
         else:
             print(ENCRYPT_DECRYPT_KEY,"key")
             password=encrypter(password=password,key=ENCRYPT_DECRYPT_KEY)
+            # print(image)
             q='''INSERT INTO users(username,password,name,email,sapid,image,is_admin) VALUES (%s,%s,%s,%s,%s,%s,%s)'''
-            self.pointer.execute(q,(username,password,name,email,sapid,image,is_admin,))
+            self.pointer.execute(q,(username,password,name,email,sapid,image,is_admin,)) 
             # self.pointer.commit()
-            
+             
             return [True,'done']
     
     # def register_user(self,username,password,name,email,sapid)
@@ -53,4 +54,4 @@ class Register:
                 self.session.commit()
                 return 200,'Registeration Completed.'
         except Exception as err: 
-            return 400,err
+            return 500,err

@@ -3,6 +3,11 @@ import os
 from helpers import decrypter
 from FaceVerify_main import FaceVerify
 
+#extra import
+import cv2
+import base64
+import numpy as np
+
 ENCRYPT_DECRYPT_KEY=os.getenv('ENCRYPTION_PASS')
 
 class Login:
@@ -19,10 +24,31 @@ class Login:
             decrypt_pass=decrypter(password=db_pass,key=ENCRYPT_DECRYPT_KEY)
             if password==decrypt_pass:
                 db_image=creds_data[0][2]
-                print(db_image,image)
+                print(db_image[:10])
+                print(image[:10])
+
+                #! Below code is to see image while debug
+                # image = cv2.imdecode(db_image, cv2.IMREAD_COLOR)
+                # encoded_data = db_image.split(',')[1]
+                # nparr = np.fromstring(base64.b64decode(encoded_data), np.uint8)
+                # img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+                # encoded_data = image.split(',')[1]
+                # nparr = np.fromstring(base64.b64decode(encoded_data), np.uint8)
+                # img2 = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+                # # cv2.imshow("image"  , img)
+                # cv2.imshow("image", img2)
+                # cv2.waitKey(0)   
+                # cv2.destroyAllWindows()
+                #!
+
                 #? Face matching code here
-                print(FaceVerify.match_face('/home/sahil/Downloads/1.jpg','/home/sahil/Downloads/2.jpg'))
-                return [True,"password matched"]
+                face_match=FaceVerify.match_face(db_image,image)
+                #?
+                print(face_match)
+                if face_match.get('verified')==True:
+                    return [True,"password matched"]
+                else:
+                    return [False,"face"]
             else:
                 return [False,"password"]
         else:
@@ -37,8 +63,10 @@ class Login:
                 return 200,"User found."
             elif log_check[0]==False:
                 if log_check[1]=='password':
-                    return 400,'password is not valid.'
+                    return 400,'Password is not valid.'
                 elif log_check[1]=='username':
-                    return 400,'username is not valid.'
+                    return 400,'Username is not valid.'
+                elif log_check[1]=='face':
+                    return 400,'Face verification failed.'
         except Exception as err: 
-            return 400,err
+            return 500,err
