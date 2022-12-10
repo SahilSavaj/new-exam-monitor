@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h2>Exam questions are here</h2>
+    <form method="POST">
+         <h4 name = question >{{ question }}</h4>
+         
+         <input style = "display:none ;" name = 'question_number' value = {{ num }}>
+         
+         
+         <input type="radio" id="A" onClick = "value_setter('A')" name="option" value = "0">
+         <label onClick = "value_setter('A')" for="A"> {{ optionA }} </label><br>
+
+
+         <input type="radio" id="B" onClick = "value_setter('B')" name="option" value="0">
+         <label onClick = "value_setter('B')" for="B"> {{ optionB }} </label><br>
+
+         
+         <input type="radio" id="C" onClick = "value_setter('C')" name="option" value="0">
+         <label onClick = "value_setter('C')" for="C"> {{ optionC }} </label><br>
+         
+
+         <input type="radio" id="D" onClick = "value_setter('D')" name="option" value="0">
+         <label onClick = "value_setter('D')" for="D"> {{ optionD }} </label><br><br>
+
+
+         <input type="submit" value="Submit" disabled = 1  id = 'submit_button'>
+
+
+    </form>
+    <script src = 'static/functionality.js' ></script>
+</body>
+
+</html>
