@@ -42,22 +42,18 @@ const Register =() => {
   }
   const handleSubmit  = async (e) => {
     e.preventDefault();
-    const img=await webcamRef.current.getScreenshot()
-    console.log(img)
-    setImage(img) 
     let content={
         username:username,
         password:password,
-        image:image,
+        image:webcamRef.current.getScreenshot(),
       }
     console.log(content);
     const url='http://127.0.0.1:5000/login'
         await axios.post(url, content)
         .then(response => {
-          console.log(response.data.statuscode)
+          console.log(response.data)
           if(response.data.statuscode === 200){
             console.log('s')
-            
           }
           }
           )

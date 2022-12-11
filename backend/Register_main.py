@@ -54,4 +54,4 @@ class Register:
                 self.session.commit()
                 return 200,'Registeration Completed.'
         except Exception as err: 
-            return 500,err
+            return 500,str(err)

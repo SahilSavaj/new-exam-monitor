@@ -16,6 +16,16 @@ venv
 /venv/*
 **/venv
 
+/backend/env/
+/backend/env
+env
+/env/
+/env/*
+**/env
+
+
+.vscode
+
 # testing
 /coverage
 

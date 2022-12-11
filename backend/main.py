@@ -3,7 +3,7 @@ from flask_cors import CORS
 from Login_main import Login
 from Register_main import Register
 from flask import render_template
-# from db_connection import cur,con
+from database import db
 
 app=Flask(__name__)
 CORS(app)
@@ -30,12 +30,14 @@ def reg():
 
 		except Exception as e:
 			response='400'
-			body=e
+			body=str(e)
 	else:
 		response='200'
 		body='Registeration Page'
+	print("hashah",response,body)
+	
 	resp={"statuscode":response,"response":body}
-	# print(resp)
+	print(resp)
 	# db.close()
 	return (resp)
 
@@ -50,7 +52,7 @@ def log():
 
 		except Exception as e:
 			response='400'
-			body=e
+			body=str(e)
 	else:
 		response='200'
 		body='Login Page'
@@ -64,7 +66,6 @@ def admin():
 	if request.method=='GET':
 		pass
 		
-
 
 @app.route('/capture',methods=['GET','POST'])
 def capture():
@@ -84,43 +85,34 @@ def capture():
 	return (resp)
 
 
-
-
-
-
-
-
 #############################################################################################################################
 
 
-# '''
-# API workflow:
-# 1) Displaying exam questions and options from table name "exam_questions" on frontend. 
-# 2) Storing student ans in "student_ans" table
-# 3) submit button will be disabled until option not selected
-# '''
+'''
+API workflow:
+1) Displaying exam questions and options from table name "exam_questions" on frontend. 
+2) Storing student ans in "student_ans" table
+3) submit button will be disabled until option not selected
+'''
 
 
-# @app.route('/exam', methods = ["POST","GET"])
-# def exam():
+@app.route('/exam', methods = ["POST","GET"])
+def exam():
+	cur=db.cursor()
+	cur.execute(f"select questions,optionA,optionB,optionC,optionD from exams_questions where question_no = 1;")
+	question,optionA,optionB,optionC,optionD = list(cur)[0]
 	
 
-	
-# 	cur.execute(f"select questions,optionA,optionB,optionC,optionD from exams_questions where question_no = 1;")
-# 	question,optionA,optionB,optionC,optionD = list(cur)[0]
-	
-
-# 	if request.method == "POST":
-# 		student_ans = request.form.getlist('option')[0]
-# 		print(student_ans)
-# 		cur.execute(f"INSERT INTO student_ans (student_ans) VALUES ('{student_ans}');")
-# 		con.commit()
-# 		num = int(request.form['question_number']) + 1
-# 		cur.execute(f"select questions,optionA,optionB,optionC,optionD from exams_questions where question_no = {num};")
-# 		question,optionA,optionB,optionC,optionD = list(cur)[0]
-# 		return render_template("exam.html",question=question,optionA=optionA,optionB=optionB,optionC=optionC,optionD=optionD,num=num)
-# 	return render_template("exam.html",question=question,optionA=optionA,optionB=optionB,optionC=optionC,optionD=optionD,num=1)
-
+	if request.method == "POST":
+		student_ans = request.form.getlist('option')[0]
+		print(student_ans)
+		cur.execute(f"INSERT INTO student_ans (student_ans) VALUES ('{student_ans}');")
+		db.commit()
+		num = int(request.form['question_number']) + 1
+		cur.execute(f"select questions,optionA,optionB,optionC,optionD from exams_questions where question_no = {num};")
+		question,optionA,optionB,optionC,optionD = list(cur)[0]
+		return render_template("exam.html",question=question,optionA=optionA,optionB=optionB,optionC=optionC,optionD=optionD,num=num)
+	return render_template("exam.html",question=question,optionA=optionA,optionB=optionB,optionC=optionC,optionD=optionD,num=1)
 
 
 

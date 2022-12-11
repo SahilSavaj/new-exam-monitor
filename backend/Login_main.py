@@ -23,9 +23,9 @@ class Login:
             db_pass=creds_data[0][1]
             decrypt_pass=decrypter(password=db_pass,key=ENCRYPT_DECRYPT_KEY)
             if password==decrypt_pass:
-                db_image=creds_data[0][2]
-                print(db_image[:10])
-                print(image[:10])
+                db_image=creds_data[0][2].decode('ascii')
+                print(db_image[:12])
+                print(image[:20])
 
                 #! Below code is to see image while debug
                 # image = cv2.imdecode(db_image, cv2.IMREAD_COLOR)
@@ -53,6 +53,7 @@ class Login:
                 return [False,"password"]
         else:
             return [False,"username"]
+    
     def login_user(self,params):
         username=params.get('username')
         password=params.get('password')
@@ -69,4 +70,4 @@ class Login:
                 elif log_check[1]=='face':
                     return 400,'Face verification failed.'
         except Exception as err: 
-            return 500,err
+            return 500,str(err)

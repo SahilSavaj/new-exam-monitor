@@ -7,6 +7,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
 
+const sleep = ms => new Promise(
+  resolve => setTimeout(resolve, ms)
+);
+
 const Register =() => {
 
     const [name,setName]=useState('');
@@ -62,52 +66,45 @@ const Register =() => {
       facingMode: "user"
     };
     const webcamRef = React.useRef(null);
-    const capture = async () => {
-      // return await webcamRef.current.getScreenshot();
-        const img=await webcamRef.current.getScreenshot()
-        return img
-        }   
-        
-  const Response_from_back=()=>{
+    const Response_from_back=()=>{
     return{
       __html:`<h1>{resp}</h1>`
     };
-  }
+    }
   const handleSubmit  = async (e) => {
     e.preventDefault();
-    const img = capture()
-    // image.then(function(result){console.log(result)}))
-    setImage(img.then(function(result){setImage(result)})) 
-    // const image="heeee"
-    // console.log(image)
+
     let content={
         name:name,
         username:username,
         password:password,
         email:email,
         sapid:sapid,
-        image:image,
+        image:webcamRef.current.getScreenshot(),
         is_admin:true 
       }
-    const headers={
-      'Access-Control-Allow-Origin':'*',
-      'Content-type':'application/json'
-    }
     console.log(content);
-    const url='http://192.168.0.104:5000/register';
-    // const url='http://127.0.0.1:5000/register'
+    await sleep(3000)
+      const url='http://127.0.0.1:5000/register'
         await axios.post(url, content,{headers:{
-          'Access-Control-Allow-Origin':'*',
-          'Content-type':'application/json'
+          // 'Access-Control-Allow-Origin':'*',
+          // 'Content-type':'application/json'
         }})
         .then(response => 
           console.log(response.data)
+          // setResp(response.data)
           )
         .catch(error => {
         console.error('There was an error!', error);
         });
-        console.log(resp);
-    }
+
+        // console.log("Heyy",resp);
+    
+    
+    
+  }
+    // const url='http://192.168.0.104:5000/register';
+    
     // console.log("The form was submitted with the following data:");
     // console.log(this.state);
     
@@ -125,9 +122,6 @@ const Register =() => {
                   <div dangerouslySetInnerHTML={Response_from_back()} />
                 )
             }})()}
-                
-              
-               
             </div>
             <form className="formFields" onSubmit={(e)=>handleSubmit(e)}>
               <Row><Col>
@@ -220,7 +214,7 @@ const Register =() => {
                   onChange={(e) => handleInputChange(e)}
                 /></Col>
               </div>
-              <div className="radio">
+              {/* <div className="radio">
                 <label>
                   <input
                     type="radio"
@@ -243,7 +237,7 @@ const Register =() => {
                   />
                   Student
                 </label>
-              </div>
+              </div> */}
               <div className="formField">
               <Col>
                 <label className="formFieldLabel" htmlFor="terms">
