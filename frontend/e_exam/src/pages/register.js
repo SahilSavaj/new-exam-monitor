@@ -89,10 +89,17 @@ const Register =() => {
         image:image,
         is_admin:true 
       }
+    const headers={
+      'Access-Control-Allow-Origin':'*',
+      'Content-type':'application/json'
+    }
     console.log(content);
-    // const url='http://172.17.0.2:5000/register';
-    const url='http://127.0.0.1:5000/register'
-        await axios.post(url, content)
+    const url='http://192.168.0.104:5000/register';
+    // const url='http://127.0.0.1:5000/register'
+        await axios.post(url, content,{headers:{
+          'Access-Control-Allow-Origin':'*',
+          'Content-type':'application/json'
+        }})
         .then(response => 
           console.log(response.data)
           )
