@@ -4,6 +4,8 @@ from Login_main import Login
 from Register_main import Register
 from flask import render_template
 from database import db
+import json
+from Exam_main import Exam_Main
 
 app=Flask(__name__)
 CORS(app)
@@ -23,6 +25,7 @@ def reg():
 		try:
 			register=Register()
 			body = request.json
+			print(type(body))
 			# print(type(body))
 			# body=dict(body)
 			# print(body)
@@ -95,27 +98,13 @@ API workflow:
 3) submit button will be disabled until option not selected
 '''
 
-
 @app.route('/exam', methods = ["POST","GET"])
 def exam():
-	cur=db.cursor()
-	cur.execute(f"select questions,optionA,optionB,optionC,optionD from exams_questions where question_no = 1;")
-	question,optionA,optionB,optionC,optionD = list(cur)[0]
-	
-
-	if request.method == "POST":
-		student_ans = request.form.getlist('option')[0]
-		print(student_ans)
-		cur.execute(f"INSERT INTO student_ans (student_ans) VALUES ('{student_ans}');")
-		db.commit()
-		num = int(request.form['question_number']) + 1
-		cur.execute(f"select questions,optionA,optionB,optionC,optionD from exams_questions where question_no = {num};")
-		question,optionA,optionB,optionC,optionD = list(cur)[0]
-		return render_template("exam.html",question=question,optionA=optionA,optionB=optionB,optionC=optionC,optionD=optionD,num=num)
-	return render_template("exam.html",question=question,optionA=optionA,optionB=optionB,optionC=optionC,optionD=optionD,num=1)
-
-
-
+	num = 1
+	client = Exam_Main()
+	response,resp_body = client.process_request(num)
+	resp={"statuscode":response,"response":resp_body}
+	return resp
 if __name__=='__main__':
 	app.run(debug=True,host='0.0.0.0') 
 
