@@ -102,9 +102,28 @@ API workflow:
 def exam():
 	num = 1
 	client = Exam_Main()
-	response,resp_body = client.process_request(num)
+	if request.method=='GET':
+		response,resp_body = client.process_request(num)
+	elif request.method=='POST':
+		body=request.json
+		print(body)
+		num=body.get('question_no',1)
+		sapid=body.get('sapid',None)
+		answer=body.get('ans',None)
+		if (sapid==None or sapid==''):
+			resp={"statuscode":500,"response":"Invalid Request"}
+			return resp
+		is_ans_uploaded=client.upload_answers(num, sapid, num)
+		if is_ans_uploaded:
+			response,resp_body=client.process_request(num)
+			if resp_body==False:
+				response,resp_body=(200,"No more Questions.")
+		else:
+			response,resp_body=(500,"Answer not uploaded.")
+
 	resp={"statuscode":response,"response":resp_body}
 	return resp
+
 if __name__=='__main__':
 	app.run(debug=True,host='0.0.0.0') 
 

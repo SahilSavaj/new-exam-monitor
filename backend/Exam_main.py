@@ -9,10 +9,19 @@ class Exam_Main:
         resp = self.fetch_questions(num)
 
         if type(resp) is str:
-            return 500,resp
+            return 400,False
         print(type(resp),'rihdamshafa')
         formatted_data = self.format_payload(resp,num)
         return 200,formatted_data
+
+    def upload_answers(self,num,sapid,question_no):
+        try:
+            self.cur.execute(f"insert into student_ans(question_id,student_id,student_ans) values({question_no},{sapid},{num});")
+            self.session.commit()
+            return True
+        except Exception as e:
+            print(e)
+            return False
 
     def fetch_questions(self,num):
         try:
