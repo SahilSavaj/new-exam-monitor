@@ -144,26 +144,32 @@ def add_question():
 
 
 
+@app.route('/admin/add_question', methods = ["GET","POST"])
+def add_question():
+	if request.method == 'POST':
+		data = json.loads(request.data) 
+		client = Admin_Add_Question()
+		response,resp_body = client.process_request(data)
+		resp={"statuscode":response,"response":resp_body}
+		return resp
+
+
+	resp={"statuscode":200,"response":"add your questions here!"}
+	return resp	
+
+
+
 @app.route('/admin/list_students', methods = ["GET","POST"])
 def list_student():
 
-	if request.methodf request.method == 'GET':	
-		num = 1
-		client = Exam_Main()
-		response,resp_body = client.process_request(num)
-		resp={"statuscode":response,"response":resp_body}
-		return resp
-	
-	if request.method == 'POST':
-		pass
- == 'POST':	
+	if request.method == 'POST':	
 		data = json.loads(request.data) 
 		client = Admin_List_Student()
 		response,resp_body = client.process_request(data)
 		resp={"statuscode":response,"response":resp_body}
 		return resp
 	resp = {"statuscode":200,"response":"search for student !!!"}
-	return resp	
+	return resp
  
 			
 
