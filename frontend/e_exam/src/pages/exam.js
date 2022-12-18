@@ -6,6 +6,10 @@ import { useNavigate } from "react-router-dom";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
+import * as tf from "@tensorflow/tfjs";
+import * as facemesh from "@tensorflow-models/facemesh";
+
+
 
 const sleep = ms => new Promise(
     resolve => setTimeout(resolve, ms)
@@ -15,7 +19,7 @@ const sleep = ms => new Promise(
 const Exam =() => {
     const [show,setShow]=useState(false);
     const [button,setButton]=useState(true)
-    const [sapid,setSapid]=useState('');
+    // const [sapid,setSapid]=useState('');
     const [question_no,setQuestion_no]=useState('1');
     // const [image,setImage]=useState('');
     const [question,setQuestion]=useState('');
@@ -25,17 +29,20 @@ const Exam =() => {
     const [option_d,setOption_d]=useState('')
     const [ans,setAns]=useState('')
     const [num,setNum]=useState(1)
+    const [abort,setAbort]=useState(0)
     let navigate = useNavigate();
 
-    // let content={
-    //     sapid:sapid,
-    //     question_no:question_no,
-    //     question:question,
-    //     option_a:option_a,
-    //     option_b:option_b,
-    //     option_c:option_c,
-    //     option_d:option_d
-    //   }
+    const searchParams = new URLSearchParams(document.location.search)
+    const sapid=searchParams.get('sapid')
+    // console.log(sapid);
+    const videoConstraints = {
+        width: 1280,
+        height: 720,
+        facingMode: "user"
+      };
+    const webcamRef = React.useRef(null); 
+
+
     const handleInputChange = (e) => {
       const {id , value} = e.target;
       // console.log()
@@ -73,12 +80,9 @@ const Exam =() => {
       }
     }
     
-    const videoConstraints = {
-      width: 1280,
-      height: 720,
-      facingMode: "user"
-    };
-    const webcamRef = React.useRef(null);  
+    
+    
+    
   const handleSubmit  = async (e) => {
     e.preventDefault();
     console.log(num+1)
@@ -123,7 +127,7 @@ useEffect(() => {
                         setOption_c(get_resp.data.response.optionC)
                         setOption_d(get_resp.data.response.optionD)
                         setQuestion_no(get_resp.data.response.question_no)
-                        setSapid(get_resp.data.response.sapid)
+                        // setSapid(sapid)
                         await sleep(1000)
     
                         console.log(get_resp.data.response)
@@ -150,7 +154,7 @@ useEffect(() => {
                     setOption_c(get_resp.data.response.optionC)
                     setOption_d(get_resp.data.response.optionD)
                     setQuestion_no(get_resp.data.response.question_no)
-                    setSapid(get_resp.data.response.sapid)
+                    // setSapid(sapid)
                     await sleep(1000)
 
                     console.log(get_resp.data.response)
@@ -159,26 +163,41 @@ useEffect(() => {
                     // Closed the loading page
                     setLoading(false);
 
-                }
-            
-
-            
+                }   
         }
-        
-        
     }
 
     // Call the function
     loadPost();
 }, [num]);
 
+async function check_face(){
+    // console.log(webcamRef.current)
+    if (webcamRef.current){
+        if(webcamRef.current.state.hasUserMedia !== false){
+            const url='http://192.168.0.109:5000/capture'
+            const content={
+                image:webcamRef.current.getScreenshot()
+                }
+            const response = await axios.post(url,content);
+            // setPosts(response.data.response);
+            console.log(response.data)
+        }
+        else{
+            alert("No Webcam Access available.")
+            navigate("/")
+        }
+    }
+    
+}
+
 
 
 return (
     <>
-            {loading ? (
-                <h4 class="question">Loading Questions...</h4>) :
-                (
+        {loading ? (
+            <h4 class="question">Loading Questions...</h4>) :
+            (
       <Container fluid>
         <div className='login-form'>
           <div className="formCenter">
@@ -188,20 +207,27 @@ return (
                   <h1 class='login-form-heading'>Exam</h1>
               </Row>      
               </div>
+              <div className="exam-web-cam" >
+                <Webcam
+                audio={false}
+                height={100}
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+                width={175}
+                videoConstraints={videoConstraints}
+                />
+            </div>
               {button && <div className="formField">
 
                 All Content here 
               <button className="formFieldButton" onClick={()=>{setShow(!show)
                 setButton(false)
-                // console.log("IN HTML",posts)
-                // setQuestion(posts.question)
-                // setOption_a(posts.optionA)
-                // setOption_b(posts.optionB)
-                // setOption_c(posts.optionC)
-                // setOption_d(posts.optionD)
-                // setQuestion_no(posts.question_no)
-                // setSapid(posts.sapid)
-                // console.log(sapid)
+                {
+                    setInterval(()=>{
+                        check_face();
+                    },1000) 
+                    
+                }
             }
             }>
                 {show ? "Start Exam":"Start Exam"}
@@ -272,11 +298,14 @@ return (
                         </label>
                     </Row>   
                     </Col>
+                    
+                   
                 </div>
                 <div className="formField">
                   <button className="formFieldButton" >Next</button>
                 </div>
                 </div>
+                
                 }
             </form>
           </div>

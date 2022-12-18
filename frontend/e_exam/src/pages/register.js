@@ -71,8 +71,12 @@ const Register =() => {
     const webcamRef = React.useRef(null);
   const handleSubmit  = async (e) => {
     e.preventDefault();
-
-    let content={
+    if( webcamRef.current.state.hasUserMedia === false ){
+      alert("Webcam Access not available.")
+      navigate("/register")
+    }
+    else{
+      let content={
         name:name,
         username:username,
         password:password,
@@ -96,7 +100,7 @@ const Register =() => {
           console.log(response.data)
           if (response.data.statuscode===200){
               alert(response.data.response)
-              navigate("/login")
+              navigate("/login",{sapid:sapid})
           }
           else{
             alert(response.data.response)
@@ -108,22 +112,11 @@ const Register =() => {
         .catch(error => {
         console.error('There was an error!', error);
         });
-
-        // console.log("Heyy",resp);
-    
-    
-    
+    }
   }
-    // const url='http://192.168.0.104:5000/register';
-    
-    // console.log("The form was submitted with the following data:");
-    // console.log(this.state);
-    
-  
+
   return (
       <>
-
-<>
       <Container fluid> 
         <div className='login-form'>
           <div className="formCenter">
@@ -267,7 +260,7 @@ const Register =() => {
      
       </Container>
     </>
-    </>
+    
     );
 }
 export default Register;

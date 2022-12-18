@@ -24,9 +24,9 @@ return (
             {/* <NavLink to="/exam" activeStyle>
             Exam
             </NavLink> */}
-            <NavLink to="/contact" activeStyle>
+            {/* <NavLink to="/contact" activeStyle>
             Contact Us
-            </NavLink>
+            </NavLink> */}
         </NavMenu>
     </Nav>
     </>

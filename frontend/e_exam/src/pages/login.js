@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import '../page-styles/Forms.css'
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { Route } from "react-router";
 
 import Webcam from "react-webcam";
 import Container from 'react-bootstrap/Container';
@@ -17,7 +18,7 @@ const Register =() => {
     // const [image,setImage]=useState('');
     // const [resp,setResp]=useState('');
     let navigate = useNavigate();
-
+    // console.log(Route.sapid)
     const handleInputChange = (e) => {
       const {id , value} = e.target;
       // console.log()
@@ -39,7 +40,9 @@ const Register =() => {
         
   const handleSubmit  = async (e) => {
     e.preventDefault();
-    let content={
+    // console.log(webcamRef.current)
+    if(webcamRef.current.state.hasUserMedia !== false ){
+      let content={
         username:username,
         password:password,
         image:webcamRef.current.getScreenshot(),
@@ -51,8 +54,11 @@ const Register =() => {
         .then(response => {
           console.log(response.data)
             if (response.data.statuscode===200){
-              alert(response.data.response);
-              navigate("/exam")
+              console.log(response.data.response.sapid)
+              navigate({
+                pathname: '/exam',
+                search: '?sapid='+response.data.response.sapid,
+              })
             }
             else{
               alert(response.data.response)
@@ -63,12 +69,15 @@ const Register =() => {
         .catch(error => {
         console.error('There was an error!', error);
         });
+      
+    }
+    else{
+      alert("Webcam Access not available.")
+      navigate("/login")
+    }
+    
     }
     // {console.log(window.innerWidth)}
-    var width_cam=640
-    if(window.innerWidth/2 <=300){
-      width_cam=0
-    }
     
   
   return (
@@ -135,7 +144,7 @@ const Register =() => {
                   height={300}
                   ref={webcamRef}
                   screenshotFormat="image/jpeg"
-                  width={width_cam}
+                  width={640}
                   videoConstraints={videoConstraints}
                 />
                 </div>

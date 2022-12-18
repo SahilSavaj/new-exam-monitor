@@ -28,6 +28,10 @@
   /* border-radius: 50px; */
   /* margin-top: 190px; */
   padding: auto;
+  /* width: 100px; */
+}
+.exam-web-cam{
+  padding-left: 85%;
 }
 .row{
   display: flex;
