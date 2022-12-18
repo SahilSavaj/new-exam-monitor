@@ -6,6 +6,8 @@ from flask import render_template
 from database import db
 import json
 from Exam_main import Exam_Main
+from Admin_add_question import Admin_Add_Question
+from Admin_list_student import Admin_List_Student
 
 app=Flask(__name__)
 CORS(app)
@@ -124,9 +126,53 @@ def exam():
 	resp={"statuscode":response,"response":resp_body}
 	return resp
 
+
+
+
+@app.route('/admin/add_question', methods = ["GET","POST"])
+def add_question():
+	if request.method == 'POST':
+		data = json.loads(request.data) 
+		client = Admin_Add_Question()
+		response,resp_body = client.process_request(data)
+		resp={"statuscode":response,"response":resp_body}
+		return resp
+
+
+	resp={"statuscode":200,"response":"add your questions here!"}
+	return resp	
+
+
+
+@app.route('/admin/list_students', methods = ["GET","POST"])
+def list_student():
+
+	if request.methodf request.method == 'GET':	
+		num = 1
+		client = Exam_Main()
+		response,resp_body = client.process_request(num)
+		resp={"statuscode":response,"response":resp_body}
+		return resp
+	
+	if request.method == 'POST':
+		pass
+ == 'POST':	
+		data = json.loads(request.data) 
+		client = Admin_List_Student()
+		response,resp_body = client.process_request(data)
+		resp={"statuscode":response,"response":resp_body}
+		return resp
+	resp = {"statuscode":200,"response":"search for student !!!"}
+	return resp	
+ 
+			
+
 if __name__=='__main__':
 	app.run(debug=True,host='0.0.0.0') 
 
 
 
 #############################################################################################################################
+
+
+
