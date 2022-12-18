@@ -1,17 +1,11 @@
 import React, { useState ,useEffect} from "react";
 import '../page-styles/Forms.css'
-import * as ReactDOM from 'react-dom';
-import { Link,Route  } from "react-router-dom";
-// import { Navigate } from 'react-router-dom';
 import Webcam from "react-webcam";
 import Container from 'react-bootstrap/Container';
 import { useNavigate } from "react-router-dom";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
-import { queries } from "@testing-library/react";
-import { FaCheck } from "react-icons/fa";
-import context from "react-bootstrap/esm/AccordionContext";
 
 const sleep = ms => new Promise(
     resolve => setTimeout(resolve, ms)
@@ -23,7 +17,7 @@ const Exam =() => {
     const [button,setButton]=useState(true)
     const [sapid,setSapid]=useState('');
     const [question_no,setQuestion_no]=useState('1');
-    const [image,setImage]=useState('');
+    // const [image,setImage]=useState('');
     const [question,setQuestion]=useState('');
     const [option_a,setOption_a]=useState('')
     const [option_b,setOption_b]=useState('')
@@ -93,7 +87,6 @@ const Exam =() => {
 
 const [loading, setLoading] = useState(false);
 const [posts, setPosts] = useState([]);
-const [gets,setGets]=useState([])
 
 useEffect(() => {
     const loadPost = async () => {
@@ -296,6 +289,3 @@ return (
 }
 
 export default Exam;
-
-// const rootElement=document.getElementById('root')
-// ReactDOM.render(<Exam></Exam>,rootElement)
