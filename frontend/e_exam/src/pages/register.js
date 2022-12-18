@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import '../page-styles/Forms.css'
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Webcam from "react-webcam";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -18,9 +19,11 @@ const Register =() => {
     const [password,setPassword]=useState('');
     const [email,setEmail]=useState('');
     const [sapid,setSapid]=useState('');
-    const [image,setImage]=useState('');
-    const [user_type,setUser]=useState('');
-    const [resp,setResp]=useState('');
+    // const [image,setImage]=useState('');
+    // const [user_type,setUser]=useState('');
+    // const [resp,setResp]=useState('');
+    let navigate = useNavigate();
+
 
     const handleInputChange = (e) => {
       const {id , value} = e.target;
@@ -47,15 +50,15 @@ const Register =() => {
       //   setUser(value)
         
       // }
-      let content={
-        name:name,
-        username:username,
-        password:password,
-        email:email,
-        sapid:sapid,
-        image:image,
-        is_admin:true
-      }
+      // let content={
+      //   name:name,
+      //   username:username,
+      //   password:password,
+      //   email:email,
+      //   sapid:sapid,
+      //   image:image,
+      //   is_admin:true
+      // }
       // console.log(content)
 
     }
@@ -66,11 +69,6 @@ const Register =() => {
       facingMode: "user"
     };
     const webcamRef = React.useRef(null);
-    const Response_from_back=()=>{
-    return{
-      __html:`<h1>{resp}</h1>`
-    };
-    }
   const handleSubmit  = async (e) => {
     e.preventDefault();
 
@@ -92,8 +90,19 @@ const Register =() => {
           // 'Access-Control-Allow-Origin':'*',
           // 'Content-type':'application/json'
         }})
-        .then(response => 
+        .then(response => {
+
+        
           console.log(response.data)
+          if (response.data.statuscode===200){
+              alert(response.data.response)
+              navigate("/login")
+          }
+          else{
+            alert(response.data.response)
+            navigate("/register")
+          }
+        }
           // setResp(response.data)
           )
         .catch(error => {

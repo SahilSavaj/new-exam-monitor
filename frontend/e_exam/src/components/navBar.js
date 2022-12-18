@@ -21,9 +21,9 @@ return (
             <NavLink to="/register" activeStyle>
             Register
             </NavLink>
-            <NavLink to="/exam" activeStyle>
+            {/* <NavLink to="/exam" activeStyle>
             Exam
-            </NavLink>
+            </NavLink> */}
             <NavLink to="/contact" activeStyle>
             Contact Us
             </NavLink>
