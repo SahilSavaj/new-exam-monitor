@@ -9,8 +9,7 @@ class Exam_Main:
         resp = self.fetch_questions(num)
 
         if type(resp) is str:
-            return 400,False
-        print(type(resp),'rihdamshafa')
+            return 400, False
         formatted_data = self.format_payload(resp,num)
         return 200,formatted_data
 
@@ -20,13 +19,14 @@ class Exam_Main:
             self.session.commit()
             return True
         except Exception as e:
-            print(e)
+            # print(e)
             return False
 
     def fetch_questions(self,num):
         try:
             self.cur.execute(f"select questions,optionA,optionB,optionC,optionD from exam_question where question_no = {num};")
             exam_data = self.cur.fetchall()[0]
+            
             return exam_data
         except Exception as e:
             print(e)
@@ -37,7 +37,7 @@ class Exam_Main:
         question,optionA,optionB,optionC,optionD = resp
         resp_json = {
             'question' : question,
-            'sapid': "no sapid for now",
+            'sapid': "60002190091",
             'optionA':optionA,
             'optionB':optionB,
             'optionC':optionC,

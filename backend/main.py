@@ -72,41 +72,38 @@ def admin():
 		pass
 		
 
-@app.route('/capture',methods=['GET','POST'])
-def capture():
-	if request.method=='POST':
-		response='200'
-		print(request)
-		body = request.body
-		print(request.body)
-		body=dict(body)
-		# logging.debug(body)
-		# body=body
-	else:
-		response='400'
-		body='Invalid Request'
-	resp={"statuscode":response,"response":body}
-	# db.close()
-	return (resp)
+# @app.route('/capture',methods=['GET','POST'])
+# def capture():
+# 	if request.method=='POST':
+# 		response='200'
+# 		print(request)
+# 		body = request.body
+# 		print(request.body)
+# 		body=dict(body)
+# 		# logging.debug(body)
+# 		# body=body
+# 	else:
+# 		response='400'
+# 		body='Invalid Request'
+# 	resp={"statuscode":response,"response":body}
+# 	# db.close()
+# 	return (resp)
 
-
-#############################################################################################################################
-
-
-'''
-API workflow:
-1) Displaying exam questions and options from table name "exam_questions" on frontend. 
-2) Storing student ans in "student_ans" table
-3) submit button will be disabled until option not selected
-'''
 
 @app.route('/exam', methods = ["POST","GET"])
 def exam():
 	num = 1
 	client = Exam_Main()
 	if request.method=='GET':
+		body=request.args
+		num=int(body.get('question_no'))
+		print(num,"==> NUMM")
 		response,resp_body = client.process_request(num)
-	elif request.method=='POST':
+		print(resp_body)
+		resp={"statuscode":response,"response":resp_body}
+		return resp
+
+	if request.method=='POST':
 		body=request.json
 		print(body)
 		num=body.get('question_no',1)
@@ -115,34 +112,25 @@ def exam():
 		if (sapid==None or sapid==''):
 			resp={"statuscode":500,"response":"Invalid Request"}
 			return resp
-		is_ans_uploaded=client.upload_answers(num, sapid, num)
-		if is_ans_uploaded:
-			response,resp_body=client.process_request(num)
-			if resp_body==False:
-				response,resp_body=(200,"No more Questions.")
+		is_ans_uploaded=client.upload_answers(num-1, sapid, num)
+		print(is_ans_uploaded,"-->")
+		if is_ans_uploaded==True:
+			response,resp_body=(200,"Saved")
+			# response,resp_body=client.process_request(num)
+			# if resp_body==False:
+			# 	response,resp_body=(200,"No more Questions.")
 		else:
 			response,resp_body=(500,"Answer not uploaded.")
+		# response,resp_body=(500,"Answer not uploaded.")
 
-	resp={"statuscode":response,"response":resp_body}
-	return resp
-
-
-
-
-@app.route('/admin/add_question', methods = ["GET","POST"])
-def add_question():
-	if request.method == 'POST':
-		data = json.loads(request.data) 
-		client = Admin_Add_Question()
-		response,resp_body = client.process_request(data)
 		resp={"statuscode":response,"response":resp_body}
 		return resp
+	# response=500
+	# resp_body="Somethin wrong"
+	# resp={"statuscode":response,"response":resp_body}
+	# return resp
 
-
-	resp={"statuscode":200,"response":"add your questions here!"}
-	return resp	
-
-
+	
 
 @app.route('/admin/add_question', methods = ["GET","POST"])
 def add_question():
@@ -177,8 +165,6 @@ if __name__=='__main__':
 	app.run(debug=True,host='0.0.0.0') 
 
 
-
-#############################################################################################################################
 
 
 
