@@ -22,6 +22,9 @@ env
 /env/
 /env/*
 **/env
+Env/
+Env*
+/Env
 
 
 .vscode

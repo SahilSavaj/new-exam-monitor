@@ -4,6 +4,10 @@ from Login_main import Login
 from Register_main import Register
 from flask import render_template
 from database import db
+import json
+from Exam_main import Exam_Main
+from Admin_add_question import Admin_Add_Question
+from Admin_list_student import Admin_List_Student
 
 app=Flask(__name__)
 CORS(app)
@@ -23,6 +27,7 @@ def reg():
 		try:
 			register=Register()
 			body = request.json
+			print(type(body))
 			# print(type(body))
 			# body=dict(body)
 			# print(body)
@@ -95,26 +100,78 @@ API workflow:
 3) submit button will be disabled until option not selected
 '''
 
-
 @app.route('/exam', methods = ["POST","GET"])
 def exam():
-	cur=db.cursor()
-	cur.execute(f"select questions,optionA,optionB,optionC,optionD from exams_questions where question_no = 1;")
-	question,optionA,optionB,optionC,optionD = list(cur)[0]
-	
+	num = 1
+	client = Exam_Main()
+	if request.method=='GET':
+		response,resp_body = client.process_request(num)
+	elif request.method=='POST':
+		body=request.json
+		print(body)
+		num=body.get('question_no',1)
+		sapid=body.get('sapid',None)
+		answer=body.get('ans',None)
+		if (sapid==None or sapid==''):
+			resp={"statuscode":500,"response":"Invalid Request"}
+			return resp
+		is_ans_uploaded=client.upload_answers(num, sapid, num)
+		if is_ans_uploaded:
+			response,resp_body=client.process_request(num)
+			if resp_body==False:
+				response,resp_body=(200,"No more Questions.")
+		else:
+			response,resp_body=(500,"Answer not uploaded.")
 
-	if request.method == "POST":
-		student_ans = request.form.getlist('option')[0]
-		print(student_ans)
-		cur.execute(f"INSERT INTO student_ans (student_ans) VALUES ('{student_ans}');")
-		db.commit()
-		num = int(request.form['question_number']) + 1
-		cur.execute(f"select questions,optionA,optionB,optionC,optionD from exams_questions where question_no = {num};")
-		question,optionA,optionB,optionC,optionD = list(cur)[0]
-		return render_template("exam.html",question=question,optionA=optionA,optionB=optionB,optionC=optionC,optionD=optionD,num=num)
-	return render_template("exam.html",question=question,optionA=optionA,optionB=optionB,optionC=optionC,optionD=optionD,num=1)
+	resp={"statuscode":response,"response":resp_body}
+	return resp
 
 
+
+
+@app.route('/admin/add_question', methods = ["GET","POST"])
+def add_question():
+	if request.method == 'POST':
+		data = json.loads(request.data) 
+		client = Admin_Add_Question()
+		response,resp_body = client.process_request(data)
+		resp={"statuscode":response,"response":resp_body}
+		return resp
+
+
+	resp={"statuscode":200,"response":"add your questions here!"}
+	return resp	
+
+
+
+@app.route('/admin/add_question', methods = ["GET","POST"])
+def add_question():
+	if request.method == 'POST':
+		data = json.loads(request.data) 
+		client = Admin_Add_Question()
+		response,resp_body = client.process_request(data)
+		resp={"statuscode":response,"response":resp_body}
+		return resp
+
+
+	resp={"statuscode":200,"response":"add your questions here!"}
+	return resp	
+
+
+
+@app.route('/admin/list_students', methods = ["GET","POST"])
+def list_student():
+
+	if request.method == 'POST':	
+		data = json.loads(request.data) 
+		client = Admin_List_Student()
+		response,resp_body = client.process_request(data)
+		resp={"statuscode":response,"response":resp_body}
+		return resp
+	resp = {"statuscode":200,"response":"search for student !!!"}
+	return resp
+ 
+			
 
 if __name__=='__main__':
 	app.run(debug=True,host='0.0.0.0') 
@@ -122,3 +179,6 @@ if __name__=='__main__':
 
 
 #############################################################################################################################
+
+
+
