@@ -85,7 +85,9 @@ const Register =() => {
       }
     console.log(content);
     await sleep(3000)
-      const url='http://127.0.0.1:5000/register'
+      // const url='http://127.0.0.1:5000/register'
+    const url='http://192.168.0.109:5000/register'
+
         await axios.post(url, content,{headers:{
           // 'Access-Control-Allow-Origin':'*',
           // 'Content-type':'application/json'
@@ -111,41 +113,37 @@ const Register =() => {
   
   return (
       <>
-      <Container fluid>
-        
+
+<>
+      <Container fluid> 
         <div className='login-form'>
           <div className="formCenter">
-            <div className="Message-container">
-            {(() => {
-              if (resp!=='') {
-                return (
-                  <div dangerouslySetInnerHTML={Response_from_back()} />
-                )
-            }})()}
-            </div>
             <form className="formFields" onSubmit={(e)=>handleSubmit(e)}>
-              <Row><Col>
+              <div className="formHeading">
               <Row>
                   <h1 class='login-form-heading'>Register</h1>
-              </Row>
-              <div className="formField">
-              <Col className="form-labels">
-                <label className="formFieldLabel" htmlFor="fullname">
-                  Full Name
-                </label>
-                </Col>
-                <Col>
-                <input
-                  type="text"
-                  id="name"
-                  className="formFieldInput"
-                  placeholder="Enter your full name"
-                  name="fullname" 
-                  // value={this.state.name}
-                  onChange={(e) => handleInputChange(e)}
-                /></Col>
+              </Row>      
               </div>
-              <div className="formField">
+              <div className="formDivision">
+                <div className="inputSideForm">
+                  <div className="formField">
+                    <Col className="form-labels">
+                    <label className="formFieldLabel" htmlFor="name">
+                      Name
+                    </label>
+                    </Col>
+                    <Col>
+                    <input
+                      type="text"
+                      id="name"
+                      className="formFieldInput"
+                      placeholder="Enter your name"
+                      name="name" 
+                      // value={this.state.name}
+                      onChange={(e) => handleInputChange(e)}
+                    /></Col>
+                  </div>
+                <div className="formField">
                 <Col className="form-labels">
                 <label className="formFieldLabel" htmlFor="username">
                   User Name
@@ -214,30 +212,6 @@ const Register =() => {
                   onChange={(e) => handleInputChange(e)}
                 /></Col>
               </div>
-              {/* <div className="radio">
-                <label>
-                  <input
-                    type="radio"
-                    id="admin"
-                    value="admin"
-                    // checked={}
-                    onChange={(e) => {handleInputChange(e)}}
-                  />
-                  Admin
-                </label>
-              </div>
-              <div className="radio">
-                <label>
-                  <input
-                    type="radio"
-                    id="student"
-                    value="student"
-                    // checked={}
-                    onChange={(e) => {handleInputChange(e)}}
-                  />
-                  Student
-                </label>
-              </div> */}
               <div className="formField">
               <Col>
                 <label className="formFieldLabel" htmlFor="terms">
@@ -245,7 +219,7 @@ const Register =() => {
                    className="formFieldCheckbox"
                    type="checkbox"
                    name="hasAgreed"
-                  //  value={this.state.hasAgreed}
+            //  value={this.state.hasAgreed}
                    onChange={(e) => handleInputChange(e)}
                 />{" "}
               I agree all statements in{" "}
@@ -255,17 +229,16 @@ const Register =() => {
                 </label>
                 </Col>
               </div>
+                <div className="formField">
+                  <button className="formFieldButton">Register</button>
+                </div>
 
-              <div className="formField">
-                <button className="formFieldButton">Register</button>
+                <div className="formField">
+                  <Link to="/login" className="formFieldLink">
+                      Already Registered?
+                  </Link>
+                </div>
               </div>
-
-              <div className="formField">
-                <Link to="/login" className="formFieldLink">
-                    Already Registered?
-                </Link>
-              </div>
-              </Col>
               <Col>
               <div className="web-cam" >
                 <Webcam
@@ -278,12 +251,13 @@ const Register =() => {
                 />
                 </div>
               </Col>
-              </Row>
+              </div>
             </form>
           </div>
         </div>
      
       </Container>
+    </>
     </>
     );
 }

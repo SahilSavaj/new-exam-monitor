@@ -48,7 +48,8 @@ const Register =() => {
         image:webcamRef.current.getScreenshot(),
       }
     console.log(content);
-    const url='http://127.0.0.1:5000/login'
+    // const url='http://127.0.0.1:5000/login'
+    const url='http://192.168.0.109:5000/login'
         await axios.post(url, content)
         .then(response => {
           console.log(response.data)
@@ -61,75 +62,70 @@ const Register =() => {
         console.error('There was an error!', error);
         });
     }
+    {console.log(window.innerWidth)}
+    var width_cam=640
+    if(window.innerWidth/2 <=300){
+      width_cam=0
+    }
     
   
   return (
       <>
-      <Container fluid>
-        
+      <Container fluid> 
         <div className='login-form'>
           <div className="formCenter">
-            <div className="Message-container">
-            {(() => {
-              if (resp!=='') {
-                return (
-                  <div dangerouslySetInnerHTML={Response_from_back()} />
-                )
-            }})()}
-                
-              
-               
-            </div>
             <form className="formFields" onSubmit={(e)=>handleSubmit(e)}>
-              <Row><Col>
+              <div className="formHeading">
               <Row>
                   <h1 class='login-form-heading'>Login</h1>
               </Row>      
-              <div className="formField">
+              </div>
+              <div className="formDivision">
+                <div className="inputSideForm">
+                  <div className="formField">
+                    <Col className="form-labels">
+                    <label className="formFieldLabel" htmlFor="username">
+                      User Name
+                    </label>
+                    </Col>
+                    <Col>
+                    <input
+                      type="text"
+                      id="username"
+                      className="formFieldInput"
+                      placeholder="Enter your user name"
+                      name="username" 
+                      // value={this.state.name}
+                      onChange={(e) => handleInputChange(e)}
+                    /></Col>
+                  </div>
+                <div className="formField">
                 <Col className="form-labels">
-                <label className="formFieldLabel" htmlFor="username">
-                  User Name
-                </label>
-                </Col>
-                <Col>
-                <input
-                  type="text"
-                  id="username"
-                  className="formFieldInput"
-                  placeholder="Enter your user name"
-                  name="username" 
-                  // value={this.state.name}
-                  onChange={(e) => handleInputChange(e)}
-                /></Col>
-              </div>
-              <div className="formField">
-              <Col className="form-labels">
-                <label className="formFieldLabel" htmlFor="password">
-                  Password
-                </label>
-                </Col>
-                <Col>
-                <input
-                  type="password"
-                  id="password"
-                  className="formFieldInput"
-                  placeholder="Enter your password"
-                  name="password"
-                  // value={this.state.name}
-                  onChange={(e) => handleInputChange(e)} 
-                /></Col>
-              </div>
+                  <label className="formFieldLabel" htmlFor="password">
+                    Password
+                  </label>
+                  </Col>
+                  <Col>
+                  <input
+                    type="password"
+                    id="password"
+                    className="formFieldInput"
+                    placeholder="Enter your password"
+                    name="password"
+                    // value={this.state.name}
+                    onChange={(e) => handleInputChange(e)} 
+                  /></Col>
+                </div>
+                <div className="formField">
+                  <button className="formFieldButton">Login</button>
+                </div>
 
-              <div className="formField">
-                <button className="formFieldButton">Login</button>
+                <div className="formField">
+                  <Link to="/login" className="formFieldLink">
+                      New user?
+                  </Link>
+                </div>
               </div>
-
-              <div className="formField">
-                <Link to="/login" className="formFieldLink">
-                    New user?
-                </Link>
-              </div>
-              </Col>
               <Col>
               <div className="web-cam" >
                 <Webcam
@@ -137,12 +133,12 @@ const Register =() => {
                   height={300}
                   ref={webcamRef}
                   screenshotFormat="image/jpeg"
-                  width={640}
+                  width={width_cam}
                   videoConstraints={videoConstraints}
                 />
                 </div>
               </Col>
-              </Row>
+              </div>
             </form>
           </div>
         </div>
