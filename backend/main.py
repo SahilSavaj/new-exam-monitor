@@ -8,6 +8,7 @@ import json
 from Exam_main import Exam_Main
 from Admin_add_question import Admin_Add_Question
 from Admin_list_student import Admin_List_Student
+from Capture_main import Capture
 
 app=Flask(__name__)
 CORS(app)
@@ -72,22 +73,20 @@ def admin():
 		pass
 		
 
-# @app.route('/capture',methods=['GET','POST'])
-# def capture():
-# 	if request.method=='POST':
-# 		response='200'
-# 		print(request)
-# 		body = request.body
-# 		print(request.body)
-# 		body=dict(body)
-# 		# logging.debug(body)
-# 		# body=body
-# 	else:
-# 		response='400'
-# 		body='Invalid Request'
-# 	resp={"statuscode":response,"response":body}
-# 	# db.close()
-# 	return (resp)
+@app.route('/capture',methods=['GET','POST'])
+def capture():
+	capture=Capture()
+	if request.method=='POST':
+		body=request.json
+		image=body.get('image')
+		# print(image)?
+		response,resp_body=capture.Check_face_frames(image=image)
+		
+	else:
+		response='400'
+		body='Invalid Request'
+	resp={"statuscode":response,"response":resp_body}
+	return (resp)
 
 
 @app.route('/exam', methods = ["POST","GET"])

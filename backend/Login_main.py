@@ -61,7 +61,12 @@ class Login:
         try:
             log_check=self.check_login_params(username,password,image)
             if log_check[0]==True:
-                return 200,"User found."
+                q='''SELECT sapid FROM users WHERE username= %s'''
+                self.pointer.execute(q,(username,))
+                # creds_data=self.pointer.fetchall()
+                sap_data=self.pointer.fetchall()[0][0]
+                print(sap_data)
+                return 200,{"sapid":int(sap_data),"status":"User Found."}
             elif log_check[0]==False:
                 if log_check[1]=='password':
                     return 400,'Password is not valid.'

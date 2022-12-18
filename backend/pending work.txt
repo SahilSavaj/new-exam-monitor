@@ -1,3 +1,0 @@
-Inter linking page after status code 200 remaining. (after login redirect to admin/exam page)
-after register redirect to login
-exam api
