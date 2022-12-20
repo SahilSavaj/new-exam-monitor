@@ -6,8 +6,6 @@ import { useNavigate } from "react-router-dom";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
-import * as tf from "@tensorflow/tfjs";
-import * as facemesh from "@tensorflow-models/facemesh";
 
 
 
@@ -29,7 +27,6 @@ const Exam =() => {
     const [option_d,setOption_d]=useState('')
     const [ans,setAns]=useState('')
     const [num,setNum]=useState(1)
-    const [abort,setAbort]=useState(0)
     let navigate = useNavigate();
 
     const searchParams = new URLSearchParams(document.location.search)
@@ -95,10 +92,11 @@ const [posts, setPosts] = useState([]);
 useEffect(() => {
     const loadPost = async () => {
         setLoading(true);
-        const url='http://192.168.0.109:5000/exam'
+        // const url='http://192.168.0.104:5000/exam'
+        const url='http://172.20.10.2:5000/exam'
         if (num>1){
                 const content={
-                    question_no:num,
+                    question_no:question_no,
                     sapid:sapid,
                     ans:ans
                     }
@@ -113,7 +111,7 @@ useEffect(() => {
                 
                 
                 else{
-                    const get_resp = await axios.get(url+"?question_no="+num);
+                    const get_resp = await axios.get(url+"?question_no="+num+"&sapid="+sapid);
                     console.log(num)
                     setLoading(true);
                     if(get_resp.data.response===false){
@@ -127,6 +125,8 @@ useEffect(() => {
                         setOption_c(get_resp.data.response.optionC)
                         setOption_d(get_resp.data.response.optionD)
                         setQuestion_no(get_resp.data.response.question_no)
+                        // setNum(question_no)
+
                         // setSapid(sapid)
                         await sleep(1000)
     
@@ -140,12 +140,13 @@ useEffect(() => {
                 }
             }
         else {
-                const get_resp = await axios.get(url+"?question_no="+num);
+                const get_resp = await axios.get(url+"?question_no="+num+"&sapid="+sapid);
                 console.log(num)
                 setLoading(true);
                 if(get_resp.data.response===false){
                     alert("Exam Over. Thankyou")
-                    window.location.href('/home')
+                    navigate("/")
+                    
                 }
                 else{
                     setQuestion(get_resp.data.response.question)
@@ -154,6 +155,7 @@ useEffect(() => {
                     setOption_c(get_resp.data.response.optionC)
                     setOption_d(get_resp.data.response.optionD)
                     setQuestion_no(get_resp.data.response.question_no)
+                    // setNum(question_no)
                     // setSapid(sapid)
                     await sleep(1000)
 
@@ -175,7 +177,7 @@ async function check_face(){
     // console.log(webcamRef.current)
     if (webcamRef.current){
         if(webcamRef.current.state.hasUserMedia !== false){
-            const url='http://192.168.0.109:5000/capture'
+            const url='http://192.168.0.104:5000/capture'
             const content={
                 image:webcamRef.current.getScreenshot()
                 }
@@ -222,12 +224,12 @@ return (
                 All Content here 
               <button className="formFieldButton" onClick={()=>{setShow(!show)
                 setButton(false)
-                {
+                
                     setInterval(()=>{
                         check_face();
-                    },1000) 
+                    },10000) 
                     
-                }
+      
             }
             }>
                 {show ? "Start Exam":"Start Exam"}

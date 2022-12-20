@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import '../page-styles/Forms.css'
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { Route } from "react-router";
-
 import Webcam from "react-webcam";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -49,7 +47,8 @@ const Register =() => {
       }
     console.log(content);
     // const url='http://127.0.0.1:5000/login'
-    const url='http://192.168.0.109:5000/login'
+    // const url='http://192.168.0.104:5000/login'
+        const url='http://172.20.10.2:5000/login'
         await axios.post(url, content)
         .then(response => {
           console.log(response.data)

@@ -88,7 +88,9 @@ const Register =() => {
     console.log(content);
     await sleep(3000)
       // const url='http://127.0.0.1:5000/register'
-    const url='http://192.168.0.109:5000/register'
+    // const url='http://192.168.0.104:5000/register'
+    const url='http://172.20.10.2:5000/register'
+
 
         await axios.post(url, content,{headers:{
           // 'Access-Control-Allow-Origin':'*',
@@ -225,7 +227,8 @@ const Register =() => {
                    onChange={(e) => handleInputChange(e)}
                 />{" "}
               I agree all statements in{" "}
-              <a href="" className="formFieldTermsLink">
+              <a href="/" className="formFieldTermsLink">
+                {/* add href above */}
                 terms of service
               </a>
                 </label>
