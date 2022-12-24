@@ -96,8 +96,9 @@ def exam():
 	if request.method=='GET':
 		body=request.args
 		num=int(body.get('question_no'))
-		print(num,"==> NUMM")
-		response,resp_body = client.process_request(num)
+		sapid=int(body.get('sapid'))
+		print(sapid,"==> NUMM")
+		response,resp_body = client.process_request(num,sapid)
 		print(resp_body)
 		resp={"statuscode":response,"response":resp_body}
 		return resp
@@ -105,13 +106,13 @@ def exam():
 	if request.method=='POST':
 		body=request.json
 		print(body)
-		num=body.get('question_no',1)
-		sapid=body.get('sapid',None)
-		answer=body.get('ans',None)
+		num=body.get('question_no')
+		sapid=body.get('sapid')
+		answer=body.get('ans')
 		if (sapid==None or sapid==''):
 			resp={"statuscode":500,"response":"Invalid Request"}
 			return resp
-		is_ans_uploaded=client.upload_answers(num-1, sapid, num)
+		is_ans_uploaded=client.upload_answers(num, sapid, answer)
 		print(is_ans_uploaded,"-->")
 		if is_ans_uploaded==True:
 			response,resp_body=(200,"Saved")
