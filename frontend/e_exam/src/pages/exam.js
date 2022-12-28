@@ -92,8 +92,8 @@ const [posts, setPosts] = useState([]);
 useEffect(() => {
     const loadPost = async () => {
         setLoading(true);
-        // const url='http://192.168.0.104:5000/exam'
-        const url='http://172.20.10.2:5000/exam'
+        const url='http://192.168.0.104:8000/exam'
+        // const url='http://172.20.10.2:5000/exam'
         if (num>1){
                 const content={
                     question_no:question_no,
@@ -119,7 +119,7 @@ useEffect(() => {
                         navigate("/");
                     }
                     else{
-                        setQuestion(get_resp.data.response.question)
+                        setQuestion(get_resp.data.response.questions)
                         setOption_a(get_resp.data.response.optionA)
                         setOption_b(get_resp.data.response.optionB)
                         setOption_c(get_resp.data.response.optionC)
@@ -143,13 +143,14 @@ useEffect(() => {
                 const get_resp = await axios.get(url+"?question_no="+num+"&sapid="+sapid);
                 console.log(num)
                 setLoading(true);
-                if(get_resp.data.response===false){
+                console.log(get_resp.data);
+                if(get_resp.data.response.exam_done===true){
                     alert("Exam Over. Thankyou")
                     navigate("/")
                     
                 }
                 else{
-                    setQuestion(get_resp.data.response.question)
+                    setQuestion(get_resp.data.response.questions)
                     setOption_a(get_resp.data.response.optionA)
                     setOption_b(get_resp.data.response.optionB)
                     setOption_c(get_resp.data.response.optionC)
@@ -177,7 +178,9 @@ async function check_face(){
     // console.log(webcamRef.current)
     if (webcamRef.current){
         if(webcamRef.current.state.hasUserMedia !== false){
-            const url='http://192.168.0.104:5000/capture'
+            // const url='http://192.168.0.104:5000/capture'
+        const url='http://172.20.10.2:5000/capture'
+
             const content={
                 image:webcamRef.current.getScreenshot()
                 }
@@ -227,7 +230,7 @@ return (
                 
                     setInterval(()=>{
                         check_face();
-                    },10000) 
+                    },1000) 
                     
       
             }

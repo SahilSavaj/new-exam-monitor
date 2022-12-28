@@ -7,7 +7,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 50px;
+    padding: 100px 150px;
     
 }
 .logo_video{
@@ -16,37 +16,4 @@
 }
 .main-text{
     padding:20px;
-}
-.shape-1{
-    position: absolute;
-    height: 30px;
-    top: 30%;
-    left: 30%;
-    width: 50px;
-    transform: rotate(45deg);
-    border-radius: 40px;
-    background-color: #D61C4E;
-    
-}
-.shape-2{
-    position: absolute;
-    height: 30px;
-    top: 30%;
-    left: 35%;
-    width: 50px;
-    transform: rotate(45deg);
-    border-radius: 40px;
-    background-color:#1CD6CE;
-
-}
-.shape-3{
-    position: absolute;
-    height: 30px;
-    top: 30%;
-    left: 40%;
-    width: 50px;
-    transform: rotate(45deg);
-    border-radius: 40px;
-    background-color: #FEDB39;
-
 }

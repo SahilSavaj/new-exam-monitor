@@ -47,8 +47,8 @@ const Register =() => {
       }
     console.log(content);
     // const url='http://127.0.0.1:5000/login'
-    // const url='http://192.168.0.104:5000/login'
-        const url='http://172.20.10.2:5000/login'
+    const url='http://192.168.0.104:8000/login'
+        // const url='http://172.20.10.2:5000/login'
         await axios.post(url, content)
         .then(response => {
           console.log(response.data)
